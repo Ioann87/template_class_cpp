@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -21,7 +22,47 @@ public:
     vector<T> get_result();
     void update_memmory(T num1, T2 oper, T num2);
     void update_result(T num1, T2 oper, T num2);
+
+    friend ofstream& operator << (ofstream& out, const CalcMemmory<T, T2>& obj) {
+        out << "first number: ";
+        for (const auto el : obj.first)
+        {
+            out << el;
+        }
+        out << endl;
+        out << "operation: ";
+        for (size_t i = 0; i < obj.operation.size(); i++)
+        {
+            out << obj.operation[i] << " ";
+        }
+        out << endl;
+        out << "second number: ";
+        for (size_t i = 0; i < obj.second.size(); i++)
+        {
+            out << obj.second[i] << " ";
+        }
+        out << endl;
+        for (size_t i = 0; i < obj.second.size(); i++)
+        {
+            out << "=" << " ";
+        }
+        out << endl;
+        out << "result: ";
+        for (size_t i = 0; i < obj.result.size(); i++)
+        {
+            out << obj.result[i] << " ";
+        }
+        out << endl;
+        return out;
+    }
+    friend ifstream& operator >> (ifstream& in, CalcMemmory<T, T2> obj) {
+        in >> obj.first;
+        in >> obj.operation;
+        in >> obj.second;
+        return in;
+    }
 };
+
 template <typename T, typename T2>
 vector<T> CalcMemmory<T, T2>::get_first()
 {
@@ -45,10 +86,10 @@ vector<T> CalcMemmory<T, T2>::get_result()
 template <typename T, typename T2>
 CalcMemmory<T, T2>::CalcMemmory()
 {
-    first[0];
-    operation[0];
-    second[0];
-    result[0];
+    first.reserve(0);
+    operation.reserve(0);
+    second.reserve(0);
+    result.reserve(0);
 }
 
 template <typename T, typename T2>
@@ -107,9 +148,9 @@ int main()
 
     for (size_t i = 0; i < f.size(); i++) {
         cout << f[i] << " "
-             << ch[i] << " "
-             << s[i] << " = "
-             << res[i] << endl;
+            << ch[i] << " "
+            << s[i] << " = "
+            << res[i] << endl;
     }
 
     CalcMemmory<double, char> obj2;
@@ -134,10 +175,14 @@ int main()
 
     for (size_t i = 0; i < fd.size(); i++) {
         cout << fd[i] << " "
-             << chd[i] << " "
-             << sd[i] << " = "
-             << resd[i] << endl;
+            << chd[i] << " "
+            << sd[i] << " = "
+            << resd[i] << endl;
     }
+
+    ofstream double_file;
+    double_file.open("C:/Users/st/source/repos/homework27/double_res.txt");
+    double_file << obj2;
 
     return 0;
 }
