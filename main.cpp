@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <fstream>
 
@@ -25,32 +26,28 @@ public:
 
     friend ofstream& operator << (ofstream& out, const CalcMemmory<T, T2>& obj) {
         out << "first number: ";
-        for (const auto el : obj.first)
+        for (size_t i = 0; i < obj.first.size(); i++)
         {
-            out << el;
+            out << setw(5) << obj.first[i] << setw(6);
         }
         out << endl;
         out << "operation: ";
         for (size_t i = 0; i < obj.operation.size(); i++)
         {
-            out << obj.operation[i] << " ";
+            out << setw(5) << obj.operation[i] << setw(6);
         }
         out << endl;
         out << "second number: ";
         for (size_t i = 0; i < obj.second.size(); i++)
         {
-            out << obj.second[i] << " ";
-        }
-        out << endl;
-        for (size_t i = 0; i < obj.second.size(); i++)
-        {
-            out << "=" << " ";
+            out << setw(5) << obj.second[i] << setw(6);
         }
         out << endl;
         out << "result: ";
+        out << setw(12);
         for (size_t i = 0; i < obj.result.size(); i++)
         {
-            out << obj.result[i] << " ";
+            out << obj.result[i] << setw(6);
         }
         out << endl;
         return out;
@@ -59,6 +56,7 @@ public:
         in >> obj.first;
         in >> obj.operation;
         in >> obj.second;
+        in >> obj.result;
         return in;
     }
 };
@@ -66,22 +64,22 @@ public:
 template <typename T, typename T2>
 vector<T> CalcMemmory<T, T2>::get_first()
 {
-    return move(first);
+    return first;
 }
 template <typename T, typename T2>
 vector<T2> CalcMemmory<T, T2>::get_operation()
 {
-    return move(operation);
+    return operation;
 }
 template <typename T, typename T2>
 vector<T> CalcMemmory<T, T2>::get_second()
 {
-    return move(second);
+    return second;
 }
 template <typename T, typename T2>
 vector<T> CalcMemmory<T, T2>::get_result()
 {
-    return move(result);
+    return result;
 }
 template <typename T, typename T2>
 CalcMemmory<T, T2>::CalcMemmory()
@@ -152,6 +150,10 @@ int main()
             << s[i] << " = "
             << res[i] << endl;
     }
+
+    ofstream int_file;
+    int_file.open("C:/Users/st/source/repos/homework27/int_res.txt");
+    int_file << obj;
 
     CalcMemmory<double, char> obj2;
 
